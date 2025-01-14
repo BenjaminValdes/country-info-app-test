@@ -28,3 +28,5 @@ cd frontend
 npm install
 npm run dev
 ```
+
+4. If the web browser does not open automatically in both cases, open it manually. The endpoint will have a structure similar to this: http://localhost:[PORT]/
