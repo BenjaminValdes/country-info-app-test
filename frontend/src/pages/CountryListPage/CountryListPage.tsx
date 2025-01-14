@@ -12,7 +12,7 @@ const CountryListPage = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}api/countries`)
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}:${import.meta.env.VITE_API_PORT}/api/countries`)
         const countries = response.data.map((country: any) => ({
           key: country.countryCode,
           label: country.name
@@ -42,7 +42,7 @@ const CountryListPage = () => {
   return (
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 justify-center max-h-screen">
       <div className="flex flex-col items-center gap-4">
-      <h1>Welcome to the Country Information Page. Please select a country:</h1>
+      <h1 className="text-4xl font-extrabold text-center">Please select a country</h1>
         <Select
           className="max-w-xs"
           style={{ minWidth: '200px' }}

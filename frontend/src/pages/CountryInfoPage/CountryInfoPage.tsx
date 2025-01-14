@@ -3,6 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Card } from '@nextui-org/react'
 import { Country } from '../../../models/Country'
+import { Line } from 'react-chartjs-2'
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
 const CountryInfoPage = () => {
   const { countryName } = useParams()
@@ -19,12 +23,13 @@ const CountryInfoPage = () => {
     flagUrl: '',
     borderCountries: []
   })
+  const [populationData, setPopulationData] = useState<any>(null)
 
   useEffect(() => {
     const fetchCountryData = async () => {
       try {
         const countryFlagsResponse = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}api/countryFlags/`
+          `${import.meta.env.VITE_API_BASE_URL}:${import.meta.env.VITE_API_PORT}/api/countryFlags/`
         )
 
         console.log('countryFlagsResponse:', countryFlagsResponse)
@@ -40,7 +45,7 @@ const CountryInfoPage = () => {
           return
         }
         const borderCountriesResponse = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}api/borderCountries/${country.iso2}`
+          `${import.meta.env.VITE_API_BASE_URL}:${import.meta.env.VITE_API_PORT}/api/borderCountries/${country.iso2}`
         )
 
         console.log('borderCountriesResponse:', borderCountriesResponse)
@@ -56,6 +61,21 @@ const CountryInfoPage = () => {
           borderCountries
         }))
 
+        const populationResponse = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}:${import.meta.env.VITE_API_PORT}/api/populationData/`
+        )
+        const populationData = populationResponse.data.data.find((c: any) => c.country === countryName)
+        
+        if (populationData) {
+          const years = populationData.populationCounts.map((data: any) => data.year)
+          const population = populationData.populationCounts.map((data: any) => data.value)
+  
+          setPopulationData({
+            years,
+            population
+          })
+        }
+
       } catch (error) {
         console.error('Error fetching country info:', error)
       }
@@ -63,6 +83,20 @@ const CountryInfoPage = () => {
 
     fetchCountryData()
   }, [countryName])
+
+  const chartData = populationData ? {
+    labels: populationData.years, // Asegúrate de que esto sea un arreglo de años
+    datasets: [{
+      label: 'Population',
+      data: populationData.population, // Asegúrate de que esto sea un arreglo de poblaciones
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  } : {
+    labels: [],
+    datasets: []
+  }
 
   console.log('countryInfo:', countryInfo)
 
@@ -98,11 +132,10 @@ const CountryInfoPage = () => {
         </div>
       )}
 
-      <h2 className="text-2xl font-semibold text-center mt-6 mb-4">Population Chart</h2>
-      {/* Aquí se renderiza el gráfico de población */}
+<h2 className="text-2xl font-semibold text-center mt-6 mb-4">Population Chart</h2>
       <div className="flex justify-center">
         <div className="w-full md:w-1/2 lg:w-1/3 bg-gray-200 h-48 rounded-lg">
-          {/* Aquí va el gráfico de población */}
+          {populationData && <Line data={chartData} />}
         </div>
       </div>
     </div>
