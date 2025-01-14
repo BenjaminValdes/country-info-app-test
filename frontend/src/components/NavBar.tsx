@@ -10,11 +10,6 @@ const NavBar = () => {
               Country List
             </Button>
           </NavbarItem>
-          <NavbarItem>
-            <Button as={Link} color="secondary" href="http://localhost:5173/countryinfo" variant="flat">
-              Country Info
-            </Button>
-          </NavbarItem>
         </NavbarContent>
       </div>
     </Navbar>

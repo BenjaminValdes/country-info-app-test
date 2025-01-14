@@ -40,22 +40,26 @@ const CountryListPage = () => {
   console.log('selectedCountry:', selectedCountry)
 
   return (
-    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-      <Select
-        className="max-w-xs"
-        label="Country"
-        placeholder="Select a country"
-        onChange={(e) => handleCountryChange(e.target.value)}
-      >
-        {countries.map((country) => (
-          <SelectItem key={country.key} value={country.key}>
-            {country.label}
-          </SelectItem>
-        ))}
-      </Select>
-      <Button onPress={handleGetInfoClick} disabled={!selectedCountry}>
-        Get info
-      </Button>
+    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 justify-center max-h-screen">
+      <div className="flex flex-col items-center gap-4">
+      <h1>Welcome to the Country Information Page. Please select a country:</h1>
+        <Select
+          className="max-w-xs"
+          style={{ minWidth: '200px' }}
+          label="Country"
+          placeholder="Select a country"
+          onChange={(e) => handleCountryChange(e.target.value)}
+        >
+          {countries.map((country) => (
+            <SelectItem key={country.key} value={country.key}>
+              {country.label}
+            </SelectItem>
+          ))}
+        </Select>
+        <Button onPress={handleGetInfoClick} disabled={!selectedCountry} className="mt-4">
+          Get info
+        </Button>
+      </div>
     </div>
   )
 }

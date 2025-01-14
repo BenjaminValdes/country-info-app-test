@@ -2,7 +2,7 @@
 const Home = () => {
   return (
     <div className="flex justify-center h-screen">
-    <h1>Welcome to Home Page</h1>
+    <h1>Welcome to the Country Information Page</h1>
   </div>
   )
 }

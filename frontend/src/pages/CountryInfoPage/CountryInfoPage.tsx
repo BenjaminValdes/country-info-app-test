@@ -67,32 +67,44 @@ const CountryInfoPage = () => {
   console.log('countryInfo:', countryInfo)
 
   return (
-    <div>
-      <h1>Information about: {countryName}</h1>
-      {countryInfo && (
-        <>
-          <img src={countryInfo.flagUrl} alt={`${countryInfo.name} Flag`} />
-          <h2>Border Countries:</h2>
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {countryInfo.borderCountries.map((country) => (
-              <Card
-                key={country.key}
-                isPressable
-                isHoverable
-                onPress={() => navigate(`/countryinfo/${country.label}`)}
-                className="max-w-full"
-              >
-                <div className="p-4">
-                  <h3 className="text-lg font-bold text-primary">{country.label}</h3>
-                </div>
-              </Card>
-            ))}
-          </div>
+    <div className="p-4">
+      <div className="flex items-center justify-center space-x-4 mb-6">
+        <h1 className="text-4xl font-extrabold text-center">{`Information about: ${countryName}`}</h1>
+        {countryInfo?.flagUrl && (
+          <img
+            src={countryInfo.flagUrl}
+            alt={`${countryInfo.name} Flag`}
+            className="w-12 h-12 object-contain"
+          />
+        )}
+      </div>
 
-          <h2>Population Chart</h2>
-          {/* Renderiza el gráfico de población aquí */}
-        </>
+      <h2 className="text-2xl font-semibold text-center mb-4">Border Countries:</h2>
+      {countryInfo && (
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {countryInfo.borderCountries.map((country) => (
+            <Card
+              key={country.key}
+              isPressable
+              isHoverable
+              onPress={() => navigate(`/countryinfo/${country.label}`)}
+              className="max-w-full"
+            >
+              <div className="p-4 text-center">
+                <h3 className="text-lg font-medium">{country.label}</h3>
+              </div>
+            </Card>
+          ))}
+        </div>
       )}
+
+      <h2 className="text-2xl font-semibold text-center mt-6 mb-4">Population Chart</h2>
+      {/* Aquí se renderiza el gráfico de población */}
+      <div className="flex justify-center">
+        <div className="w-full md:w-1/2 lg:w-1/3 bg-gray-200 h-48 rounded-lg">
+          {/* Aquí va el gráfico de población */}
+        </div>
+      </div>
     </div>
   )
 }
